@@ -4,7 +4,7 @@ import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 
 export class App extends Component {
   state = {
-    good: 1,
+    good: 0,
     neutral: 0,
     bad: 0
   }
@@ -18,8 +18,9 @@ export class App extends Component {
     return (this.state.good/this.countTotalFeedback()*100)
   }
 
-  FeedbackCounter = (button, value) => {
-    this.setState({ good: 3 });
+  FeedbackCounter = (event) => {
+    const btnName = event.target.title;
+    this.setState({ [btnName]: this.state[btnName]+1 });
   }
 
   render() {
@@ -38,7 +39,7 @@ export class App extends Component {
       >
         <Section title="Please leave feedback">
           <FeedbackOptions
-            options={this.state} onLeaveFeedback={this.FeedbackCounter}
+            options={['good', 'neutral', 'bad']} onLeaveFeedback={this.FeedbackCounter}
           />
         </Section>
         <Section title="Statistics">
