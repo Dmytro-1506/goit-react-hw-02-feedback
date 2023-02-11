@@ -18,13 +18,23 @@ export class App extends Component {
     return (this.state.good/this.countTotalFeedback()*100)
   }
 
+  checkStatistics = () => {
+    const { good, neutral, bad } = this.state;
+    if (this.countTotalFeedback() === 0) {
+      return <Notification message="There is no feedback"></Notification>
+    } else {
+      return <Statistics
+        good={good} neutral={neutral} bad={bad} total={this.countTotalFeedback()} positivePercentage={this.countPositiveFeedbackPercentage().toFixed(2)}
+      />
+    }
+  }
+
   FeedbackCounter = (event) => {
     const btnName = event.target.title;
     this.setState({ [btnName]: this.state[btnName]+1 });
   }
 
   render() {
-    const { good, neutral, bad } = this.state;
     return (
       <div
         style={{
@@ -43,9 +53,7 @@ export class App extends Component {
           />
         </Section>
         <Section title="Statistics">
-          <Statistics
-            good={good} neutral={neutral} bad={bad} total={this.countTotalFeedback()} positivePercentage={this.countPositiveFeedbackPercentage().toFixed(2)}
-          />
+            {this.checkStatistics()}
         </Section>
       </div>
     );
@@ -59,3 +67,6 @@ const Section = ({ title, children }) => {
     </div>
 }
 
+const Notification = ({ message }) => {
+  return message
+}
